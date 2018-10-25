@@ -1,0 +1,17 @@
+{
+    "name": "dmcbl/server-php",
+    "type": "project",
+    "authors": [
+        {
+            "name": "dmcblue",
+            "email": "dmcblue@gmail.com"
+        }
+    ],
+    "require": {},
+	"scripts": {
+        "start": "php -S localhost:8080 -t public",
+        "haxe": "haxe  -cp server/src -cp server/common/src -php server/bin -main interealmGames.server.Main",
+        "test": "phpunit",
+		"fetch": "git submodule update --remote"
+    }
+}
