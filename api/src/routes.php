@@ -13,14 +13,21 @@ $dotenv->load();
 
 
 // Routes
-
+/*
+typedef RequestHandler = 
+{
+	var handler:Request -> Any;
+	var path:String; 
+	var type:RequestType;
+}
+//*/
 
 $requestHandlers = require($environmentPath.getenv('REQUEST_HANDLERS_PATH'));
 foreach($requestHandlers as $requestHandler) {
-	$method = strtolower($requestHandler->getType()->tag);
-	$handler = $requestHandler->getHandler();
+	$method = strtolower($requestHandler->type->tag);
+	$handler = $requestHandler->handler;
 	$app->$method(
-		$requestHandler->getPath(), 
+		$requestHandler->path, 
 		function (Request $request, Response $response, array $args) use ($handler) {
 			$serverRequest = new \InterealmGames\Server\Http\Slim\Request($request);
 			return $response->withJson($handler($serverRequest));
