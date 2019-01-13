@@ -1,0 +1,103 @@
+{
+	"version": "0.1.0",
+	
+	"requirements": [{
+		"name": "git",
+		"command": "git"
+	},{
+		"name": "haxe",
+		"command": "haxe",
+		"testArgument": "-version"
+	},{
+		"name": "php",
+		"command": "php"
+	},{
+		"name": "composer",
+		"command": "composer"
+	}],
+
+	"tasks": [{
+		"name": "update:git",
+		"description": "Gets remote code for dependencies",
+		"groups": [{
+			"name": "update",
+			"rank": 1
+		}],
+		"command": "git",
+		"arguments": ["submodule", "update", "--remote"]
+	},{
+		"name": "update:php",
+		"description": "Gets PHP dependencies",
+		"groups": [{
+			"name": "update",
+			"rank": 2
+		}],
+		"command": "composer",
+		"arguments": ["update"]
+	},{
+		"name": "update:slim",
+        "description": "Gets PHP dependencies",
+        "cwd": "api",
+		"groups": [{
+			"name": "update",
+			"rank": 2
+		}],
+		"command": "composer",
+		"arguments": ["update"]
+	},{
+		"name": "init:git",
+		"description": "Gets remote code for dependencies",
+		"groups": [{
+			"name": "init",
+			"rank": 1
+		}],
+		"command": "git",
+		"arguments": ["submodule", "update", "--remote", "--init"]
+	},{
+		"name": "init:php",
+		"description": "Gets PHP dependencies",
+		"groups": [{
+			"name": "init",
+			"rank": 2
+		}],
+		"command": "composer",
+		"arguments": ["install"]
+	},{
+		"name": "init:slim",
+        "description": "Gets PHP dependencies",
+        "cwd": "api",
+		"groups": [{
+			"name": "init",
+			"rank": 2
+		}],
+		"command": "composer",
+		"arguments": ["install"]
+	},{
+		"name": "build:haxe",
+		"description": "Transpiles Haxe to PHP",
+		"groups": [{
+			"name": "build",
+			"rank": 1
+		}],
+		"command": "haxe",
+		"arguments": [
+            "-cp", "src", 
+            "-cp", "common/src", 
+            "-cp", "server/src", 
+            "-php", "server/bin", 
+            "-main", "interealmGames.server.Main"
+        ]
+	},{
+		"name": "build:php",
+		"description": "Resets Composer autoload cache",
+		"groups": [{
+			"name": "build",
+			"rank": 2
+		}],
+        "cwd": "api",
+		"command": "composer",
+		"arguments": [
+            "dump-autoload"
+        ]
+	}]
+}

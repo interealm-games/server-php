@@ -4,5 +4,9 @@
 # Packages
 /vendor/
 
-#Environment
+# Environment
 .env
+
+# OpenTask
+/opentask.*
+!/opentask.*json
