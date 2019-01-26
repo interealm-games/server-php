@@ -22,7 +22,7 @@ opentask requirements test
 
 Create an environment file from `/api/environments/.env.template` in the same folder.
 
-REQUEST_HANDLERS_PATH points to the RequestHandler definitions (in another repository) which define the use of this server. Something like: `"../../editor-backend/public/index.php"`.
+REQUEST_HANDLERS_PATH points to the RequestHandler definitions (in another repository) which define the use of this server. Something like: `"../../editor-backend/public/index.php"`. You can include multiple paths, delimited by `:`. Preventing naming collisions of endpoints is up to the developer.
 
 Run: 
 ```
