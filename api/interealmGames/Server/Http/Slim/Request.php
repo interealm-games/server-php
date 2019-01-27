@@ -3,9 +3,9 @@
 namespace InterealmGames\Server\Http\Slim;
 
 use \Slim\Http\Request as SlimRequest;
-use \interealmGames_server_http_RequestType as RequestType;
+use \interealmGames\server\http\RequestType as RequestType;
 
-class Request implements \interealmGames_server_http_Request {
+class Request implements \interealmGames\server\http\Request {
 	protected $request;
 	
 	public static function convertMethod($name) {

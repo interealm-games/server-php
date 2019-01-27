@@ -43,9 +43,12 @@ function convertHaxeValues3($value) {
 
 function convertHaxeValues4($value) {
 	$converted = $value;
+	
 	if(!is_bool($value) && !is_numeric($value) && !is_string($value) && !is_callable($value) && $value !== null) {
 		if(is_array($value)) {
-			$converted = array_map('convertHaxeValues4', $value);
+			if(array_key_exists('arr', $value)) {
+				$converted = array_map('convertHaxeValues4', $value['arr']);
+			}
 		} else {
 			switch(get_class($value)) {
 				case 'Array_hx' :
@@ -53,10 +56,14 @@ function convertHaxeValues4($value) {
 					break;
 				//case 'php\_Boot\HxAnon' :
 				default :
-					//$converted = array_map('convertHaxeValues', $value->a);
-					$converted = new stdClass();
-					foreach($value as $k => $v) {
-						$converted->$k = convertHaxeValues4($v);
+					if(property_exists($value, 'arr')) {
+						$converted = array_map('convertHaxeValues4', $value->arr);
+					} else {
+						//$converted = array_map('convertHaxeValues', $value->a);
+						$converted = new stdClass();
+						foreach($value as $k => $v) {
+							$converted->$k = convertHaxeValues4($v);
+						}
 					}
 					break;
 			}
@@ -65,7 +72,6 @@ function convertHaxeValues4($value) {
 	return $converted;
 }
 
-//$requestHandlers = convertHaxeValues4(require($environmentPath.getenv('REQUEST_HANDLERS_PATH')));
 $filepaths = explode(':', getenv('REQUEST_HANDLERS_PATH'));
 $requestHandlers = [];
 foreach($filepaths as $filepath) {
@@ -76,15 +82,15 @@ foreach($filepaths as $filepath) {
 		);
 }
 
-// echo json_encode($requestHandlers);die();
 foreach($requestHandlers as $requestHandler) {
 	$method = strtolower($requestHandler->type->tag);
 	$handler = $requestHandler->handler;
+	
 	$app->$method(
 		$requestHandler->path, 
 		function (Request $request, Response $response, array $args) use ($handler, $requestHandler) {
 			$serverRequest = new \InterealmGames\Server\Http\Slim\Request($request);
-
+			
 			try{
 				$value = $handler($serverRequest);
 			} catch (Exception $error) {
@@ -106,9 +112,11 @@ foreach($requestHandlers as $requestHandler) {
 					return $response->withStatus($errorStatus, $errorMessage)->withJson($data);
 				}
 			}
-
+			
 			$output = convertHaxeValues4($value);
 			return $response->withJson($output);
+			
+			return $response->withJson(['test' => true]);
 		}
 	);
 }

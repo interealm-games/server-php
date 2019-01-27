@@ -2,7 +2,7 @@
 
 namespace InterealmGames\Server\Http\Slim;
 
-use \interealmGames_server_http_RequestType as RequestType;
+use \interealmGames\server\http\RequestType as RequestType;
 
 /**
  * I don't think I need this here
