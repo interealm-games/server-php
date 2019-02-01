@@ -4,6 +4,7 @@ namespace InterealmGames\Server\Http\Slim;
 
 use \Slim\Http\Request as SlimRequest;
 use \interealmGames\server\http\RequestType as RequestType;
+use InterealmGames\Haxe;
 
 class Request implements \interealmGames\server\http\Request {
 	protected $request;
@@ -35,7 +36,7 @@ class Request implements \interealmGames\server\http\Request {
 	}
 	
 	public function getHeader($name) {
-		return $this->request->getHeader($name);
+		return Haxe::toHaxe($this->request->getHeader($name));
 	}
 	
 	public function getParam($name) {

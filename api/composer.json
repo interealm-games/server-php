@@ -26,7 +26,7 @@
             "../server/bin/lib/"
         ],
 		"psr-4": {
-            "InterealmGames\\": "interealmGames/"
+            "InterealmGames\\": ["../languages/php/interealmGames/", "interealmGames/"]
         }
     },
     "autoload-dev": {
