@@ -18,3 +18,8 @@ $container['logger'] = function ($c) {
     $logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'], $settings['level']));
     return $logger;
 };
+
+$container['cookie'] = function($c){
+    $request = $c->get('request');
+    return new \Slim\Http\Cookies($request->getCookieParams());
+};

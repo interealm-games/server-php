@@ -37,12 +37,13 @@ foreach($filepaths as $filepath) {
 foreach($requestHandlers as $requestHandler) {
 	$method = strtolower($requestHandler->type->tag);
 	$handler = $requestHandler->handler;
-	
+	//echo "{$requestHandler->path}\t{$method}\n";
 	$app->$method(
 		$requestHandler->path, 
 		function (Request $request, Response $response, array $args) use ($handler, $requestHandler) {
-			$serverRequest = new \InterealmGames\Server\Http\Slim\Request($request);
-			
+			$serverRequest = new \InterealmGames\Server\Http\Slim\Request($request, $response);
+			//var_dump($request->getCookieParams()->get('access_token'));
+			//var_dump($_COOKIE);
 			try{
 				$value = $handler($serverRequest);
 				//var_dump($value);
@@ -69,9 +70,8 @@ foreach($requestHandlers as $requestHandler) {
 			}
 			
 			$output = Haxe::toPhp($value);
-			return $response->withJson($output);
 			
-			return $response->withJson(['test' => true]);
+			return $response->withJson($output);
 		}
 	);
 }

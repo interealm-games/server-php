@@ -3,11 +3,13 @@
 namespace InterealmGames\Server\Http\Slim;
 
 use \Slim\Http\Request as SlimRequest;
+use \Slim\Http\Reponse as SlimReponse;
 use \interealmGames\server\http\RequestType as RequestType;
 use InterealmGames\Haxe;
 
 class Request implements \interealmGames\server\http\Request {
 	protected $request;
+	protected $response;
 	
 	public static function convertMethod($name) {
 		//$request->getMethod();
@@ -31,10 +33,15 @@ class Request implements \interealmGames\server\http\Request {
 		return $method;
 	}
 	
-	public function __construct(SlimRequest $slimRequest) {
+	public function __construct(SlimRequest $slimRequest, &$slimResponse) {
 		$this->request = $slimRequest;
+		$this->response = $slimResponse;
 	}
 	
+	public function getCookie ($name) {
+		return array_key_exists($name, $_COOKIE) ? $_COOKIE[$name] : "";
+	}
+
 	public function getHeader($name) {
 		return Haxe::toHaxe($this->request->getHeader($name));
 	}
@@ -60,5 +67,27 @@ class Request implements \interealmGames\server\http\Request {
 	
 	public function getUrl() {
 		return "";
+	}
+
+	public function setHeader ($name, $value, $append = null) {
+		if ( $append ) {
+			$this->response = $this->response->withAddedHeader($name, $value);
+		} else {
+			$this->response = $this->response->withHeader($name, $value);
+		}
+	}
+
+	public function setCookie ($name, $value, $options = null) {
+		$options = Haxe::toPhp($options);
+		
+		$sess = setcookie(
+			$name, 
+			$value, 
+			property_exists($options, 'expires') ? $options->expires : 0, 
+			property_exists($options, 'path') ? $options->path : "", 
+			property_exists($options, 'domain') ? $options->domain : "", 
+			property_exists($options, 'secure') ? $options->secure : FALSE, 
+			property_exists($options, 'httpOnly') ? $options->httpOnly : FALSE
+		);
 	}
 }
