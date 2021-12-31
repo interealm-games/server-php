@@ -60,6 +60,10 @@ class Request implements \interealmGames\server\http\Request {
 		$route = $this->request->getAttribute('route');
 		return $route->getArgument($name);
 	}
+
+	public function getStatus() {
+		return $this->response->getStatusCode();
+	}
 	
 	public function getType() {
 		return self::convertMethod($this->request->getMethod());
@@ -89,5 +93,9 @@ class Request implements \interealmGames\server\http\Request {
 			property_exists($options, 'secure') ? $options->secure : FALSE, 
 			property_exists($options, 'httpOnly') ? $options->httpOnly : FALSE
 		);
+	}
+
+	public function setStatus ($status) {
+		$this->response = $this->response->withStatus($status);
 	}
 }

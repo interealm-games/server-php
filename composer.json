@@ -9,7 +9,7 @@
     ],
     "require": {},
 	"scripts": {
-        "start": "php -S localhost:8080 -t public",
+        "start": "php -S 0.0.0.0:8080 -t api/public",
         "haxe": "haxe  -cp server/src -cp server/common/src -php server/bin -main interealmGames.server.Main",
         "test": "phpunit",
 		"fetch": "git submodule update --remote"

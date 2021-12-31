@@ -65,13 +65,13 @@ foreach($requestHandlers as $requestHandler) {
 						'message' => $errorMessage,
 					];
 					
-					return $response->withStatus($errorStatus, $errorMessage)->withJson($data);
+					return $response->withStatus($errorStatus, $errorMessage)->getBody()->write($data);
 				}
 			}
 			
 			$output = Haxe::toPhp($value);
 			
-			return $response->withJson($output);
+			return $response->getBody()->write($output);
 		}
 	);
 }
