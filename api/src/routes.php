@@ -37,17 +37,15 @@ foreach($filepaths as $filepath) {
 foreach($requestHandlers as $requestHandler) {
 	$method = strtolower($requestHandler->type->tag);
 	$handler = $requestHandler->handler;
-	//echo "{$requestHandler->path}\t{$method}\n";
+
 	$app->$method(
 		$requestHandler->path, 
 		function (Request $request, Response $response, array $args) use ($handler, $requestHandler) {
 			$serverRequest = new \InterealmGames\Server\Http\Slim\Request($request, $response);
-			//var_dump($request->getCookieParams()->get('access_token'));
-			//var_dump($_COOKIE);
 			try{
 				$value = $handler($serverRequest);
-				//var_dump($value);
 			} catch (Exception $error) {
+				$this->logger->error($error);
 				$errorMessage = "An unknown error occured.";
 				$errorStatus = 500;
 				if($error->getMessage() == "[object interealmGames.server.http.Error]") {
@@ -71,7 +69,7 @@ foreach($requestHandlers as $requestHandler) {
 			
 			$output = Haxe::toPhp($value);
 			
-			return $response->getBody()->write($output);
+			return $response->write($output);
 		}
 	);
 }
@@ -83,6 +81,3 @@ $app->get('/[{name}]', function (Request $request, Response $response, array $ar
     // Render index view
     return $this->renderer->render($response, 'index.phtml', $args);
 });
-
-
-
