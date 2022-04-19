@@ -1,6 +1,6 @@
 [submodule "server"]
 	path = server
-	url = git@github.com:interealm-games/server
+	url = https://github.com/interealm-games/server
 [submodule "languages"]
 	path = languages
-	url = git@github.com:interealm-games/languages
+	url = https://github.com/interealm-games/languages
